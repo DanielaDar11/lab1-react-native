@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "Microcip",
+        "url": "/images/resource/microchip.png"
+    },
+    {
+        "id": 2,
+        "name": "Rezistor",
+        "url": "/images/resource/rezistor.png"
+    },
+    {
+        "id": 3,
+        "name": "Condensator",
+        "url": "/images/resource/condensator.png"
+    }
+]

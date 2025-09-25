@@ -1,0 +1,29 @@
+.inventoryContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+  gap: 10px;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: 2px solid black;
+  background-color: rgb(208, 208, 208);
+}
+
+.inventorySquare {
+  width: 8vw;
+  max-width: 80px;
+  min-width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .inventorySquare {
+    width: 18vw;
+    max-width: 50px;
+    min-width: 35px;
+  }
+}

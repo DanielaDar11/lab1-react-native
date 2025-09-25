@@ -1,0 +1,44 @@
+.garbageContainer {
+  width: 12vw;
+  max-width: 180px;
+  height: 12vw;
+  max-height: 180px;
+  border: 2px dashed red;
+  border-radius: 5px;
+  background-color: #ffe0e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: width 0.3s, height 0.3s;
+}
+
+.garbageHeader {
+  color: red;
+  font-weight: bold;
+  padding: 5px;
+  text-align: center;
+  width: 93%;
+
+  border-radius: 5px;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.garbageBody {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .garbageContainer {
+    width: 300px;
+    height: 300px;
+  }
+
+  .garbageHeader {
+    font-size: 0.9rem;
+  }
+}

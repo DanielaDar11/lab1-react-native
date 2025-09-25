@@ -1,0 +1,71 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.craftingSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+h2 {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 32px;
+}
+
+.bottomPanel {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 50px;
+  margin: auto;
+  margin-top: 20px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.btnRed,
+.btnBlue {
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btnRed {
+  background-color: red;
+  color: white;
+}
+
+.btnBlue {
+  background-color: #1100cfff;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .bottomPanel {
+    flex-direction: column;
+    align-items: center;
+  }
+  h2 {
+    font-size: 24px;
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+  }
+}

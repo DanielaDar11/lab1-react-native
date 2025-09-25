@@ -1,0 +1,186 @@
+[
+    {
+        "id": "1",
+        "name": "Placa de circuit",
+        "url": "/images/res/placa_de_circuit.png",
+        "description": "O bază esențială pe care sunt montate toate componentele electronice.",
+        "pattern": [
+            [
+                "Microcip",
+                "Rezistor",
+                "Condensator"
+            ],
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "id": "2",
+        "name": "Senzor temperatură",
+        "url": "/images/res/senzor.png",
+        "description": "Măsoară variațiile de temperatură și transmite datele către circuit.",
+        "pattern": [
+            [
+                "Microcip",
+                "Rezistor",
+                null
+            ],
+            [
+                null,
+                "Condensator",
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "id": "3",
+        "name": "Circuit LED",
+        "url": "/images/res/circuit_led.png",
+        "description": "Un circuit simplu care aprinde și controlează luminile LED.",
+        "pattern": [
+            [
+                "Placa de circuit",
+                "Senzor temperatură",
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "id": "4",
+        "name": "Microcontroller",
+        "url": "/images/res/microcontroller.png",
+        "description": "Creierul unui sistem electronic care controlează funcțiile acestuia.",
+        "pattern": [
+            [
+                "Microcip",
+                "Condensator",
+                "Rezistor"
+            ],
+            [
+                "Placa de circuit",
+                null,
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "id": "5",
+        "name": "Robot mind",
+        "url": "/images/res/robot-mind.png",
+        "description": "Un modul inteligent care oferă robotului capacitatea de a procesa date.",
+        "pattern": [
+            [
+                "Microcontroller",
+                "Senzor temperatură",
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                "Circuit LED",
+                null,
+                "Circuit LED"
+            ]
+        ]
+    },
+    {
+        "id": "6",
+        "name": "Automatizare casă",
+        "url": "/images/res/automatizare.png",
+        "description": "Un sistem care permite controlul automat al dispozitivelor dintr-o casă.",
+        "pattern": [
+            [
+                "Robot mind",
+                "Senzor temperatură",
+                null
+            ],
+            [
+                "Circuit LED",
+                null,
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ]
+    },
+    {
+        "id": "7",
+        "name": "Dronă",
+        "url": "/images/res/drone.png",
+        "description": "Un dispozitiv zburător controlat electronic, echipat cu senzori și lumină.",
+        "pattern": [
+            [
+                "Microcontroller",
+                "Circuit LED",
+                null
+            ],
+            [
+                "Senzor temperatură",
+                null,
+                null
+            ],
+            [
+                null,
+                "Rezistor",
+                null
+            ]
+        ]
+    },
+    {
+        "id": "8",
+        "name": "Jucărie electronică",
+        "url": "/images/res/electric-car.png",
+        "description": "Un obiect interactiv care folosește circuite electronice pentru a funcționa.",
+        "pattern": [
+            [
+                "Robot mind",
+                "Dronă",
+                null
+            ],
+            [
+                null,
+                "Senzor temperatură",
+                null
+            ],
+            [
+                null,
+                "Automatizare casă",
+                null
+            ]
+        ]
+    }
+]
