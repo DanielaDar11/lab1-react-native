@@ -15,22 +15,26 @@ const Inventory = forwardRef(
 
     const allowDrop = (e) => e.preventDefault();
 
-    const handleDrop = (e, targetIndex) => {
+    function handleDrop(e, targetIndex) {
       e.preventDefault();
-      const { item, sourceIndex, from } = JSON.parse(
-        e.dataTransfer.getData("item")
-      );
-      setSquares((prev) => {
+
+      const data = e.dataTransfer.getData("item");
+      const parsed = JSON.parse(data);
+      const item = parsed.item;
+      const sourceIndex = parsed.sourceIndex;
+      const from = parsed.from;
+
+      setSquares(function (prev) {
         const newSquares = [...prev];
 
         if (from === "bigSquare") {
           if (newSquares[targetIndex]) {
             const temp = newSquares[targetIndex];
             newSquares[targetIndex] = item;
-            moveToBigSquare && moveToBigSquare(temp, sourceIndex);
+            if (moveToBigSquare) moveToBigSquare(temp, sourceIndex);
           } else {
             newSquares[targetIndex] = item;
-            moveToBigSquare && moveToBigSquare(null, sourceIndex);
+            if (moveToBigSquare) moveToBigSquare(null, sourceIndex);
           }
         } else {
           if (newSquares[targetIndex] && sourceIndex !== undefined) {
@@ -46,18 +50,30 @@ const Inventory = forwardRef(
         return newSquares;
       });
 
-      setInventoryTrigger((prev) => prev + 1);
-    };
+      setInventoryTrigger(function (prev) {
+        return prev + 1;
+      });
+    }
 
-    const addItem = (item) => {
-      const firstEmpty = squares.findIndex((s) => s === null);
+    function addItem(item) {
+      const firstEmpty = squares.findIndex(function (s) {
+        return s === null;
+      });
+
       const newSquares = [...squares];
-      //daca am gasit o pozitie null
-      if (firstEmpty !== -1) newSquares[firstEmpty] = item;
-      else newSquares.push(item);
+      // daca am gasit o pozitie null
+      if (firstEmpty !== -1) {
+        newSquares[firstEmpty] = item;
+      } else {
+        newSquares.push(item);
+      }
       setSquares(newSquares);
-      setInventoryTrigger && setInventoryTrigger((prev) => prev + 1);
-    };
+      if (setInventoryTrigger) {
+        setInventoryTrigger(function (prev) {
+          return prev + 1;
+        });
+      }
+    }
 
     useImperativeHandle(ref, () => ({
       addItem,

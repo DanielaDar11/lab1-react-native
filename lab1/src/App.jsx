@@ -39,7 +39,7 @@ function App() {
   const [hasWon, setHasWon] = useState(false);
 
   //Verificare daca in BigSquare este o retea valida
-  const checkPattern = (grid) => {
+  function checkPattern(grid) {
     for (let recipe of recipesData) {
       let match = true;
       for (let r = 0; r < 3; r++) {
@@ -51,10 +51,10 @@ function App() {
           }
         }
       }
-      if (match == true) return recipe;
+      if (match === true) return recipe;
     }
     return null;
-  };
+  }
 
   //Salvarea in localStorage
   useEffect(() => {
@@ -73,12 +73,12 @@ function App() {
   }, [inventoryTrigger]);
 
   //Actualizeaza BigSquare cu o noua grila
-  const updateBigSquare = (newGrid) => {
+  function updateBigSquare(newGrid) {
     setBigSquareItems(newGrid);
 
-    const matchedRecipe = checkPattern(newGrid); //Verificam daca grila se potriveste cu o retea
+    const matchedRecipe = checkPattern(newGrid); // Verificam daca grila se potriveste cu o retea
 
-    //Setez imaginea si numele în Square singur
+    // Setez imaginea si numele în Square singur
     if (matchedRecipe) {
       setCraftedItemUrl(matchedRecipe.url);
       setCraftedItemName(matchedRecipe.name);
@@ -86,27 +86,30 @@ function App() {
       setCraftedItemUrl(null);
       setCraftedItemName(null);
     }
-  };
+  }
 
-  const addItemToBigSquare = (item, inventoryIndex) => {
+  function addItemToBigSquare(item, inventoryIndex) {
     const newGrid = bigSquareItems.map((row) => [...row]);
     for (let r = 0; r < 3; r++) {
       for (let c = 0; c < 3; c++) {
         if (!newGrid[r][c]) {
-          //Daca patratul e gol setez itemul
+          // Daca patratul e gol setez itemul
           newGrid[r][c] = item;
-          if (inventoryRef.current)
-            //Daca este referinta la inventar o sterg
+          if (inventoryRef.current) {
+            // Daca este referinta la inventar o sterg
             inventoryRef.current.removeItem(inventoryIndex);
-          updateBigSquare(newGrid); //Actualizez BigSquare
-          setInventoryTrigger((prev) => prev + 1); //Actalizez inventarul
+          }
+          updateBigSquare(newGrid); // Actualizez BigSquare
+          setInventoryTrigger((prev) => prev + 1); // Actualizez inventarul
           return;
         }
       }
     }
-  };
+  }
+
   //Mutam din BigSquare in inventar
-  const handleClickBigSquare = (item, index) => {
+  // Mutam din BigSquare in inventar
+  function handleClickBigSquare(item, index) {
     if (inventoryRef.current && item) {
       inventoryRef.current.addItem(item);
     }
@@ -114,12 +117,13 @@ function App() {
     const newGrid = bigSquareItems.map((row) => [...row]);
     const row = Math.floor(index / 3);
     const col = index % 3;
-    newGrid[row][col] = null; //Setez valoarea la null pe pozitia unde era itemul in BigSquare
+    newGrid[row][col] = null; // Setez valoarea la null pe pozitia unde era itemul in BigSquare
 
-    updateBigSquare(newGrid); //Actualizez BigSquare
-  };
-  //Mutam obiectele in BigSquare fie din Invantar fie din BigSquare
-  const handleDropItem = (targetIndex, item, sourceIndex, from) => {
+    updateBigSquare(newGrid); // Actualizez BigSquare
+  }
+
+  // Mutam obiectele in BigSquare fie din Inventar fie din BigSquare
+  function handleDropItem(targetIndex, item, sourceIndex, from) {
     const newGrid = bigSquareItems.map((row) => [...row]);
     const row = Math.floor(targetIndex / 3);
     const col = targetIndex % 3;
@@ -145,23 +149,25 @@ function App() {
 
     updateBigSquare(newGrid);
     setInventoryTrigger((prev) => prev + 1);
-  };
+  }
 
   //Resetam jocul
-  const restartGame = () => {
+  function restartGame() {
     setBigSquareItems(
       Array(3)
         .fill(null)
         .map(() => Array(3).fill(null))
     );
+
     setDiscoveredItems([
       { name: "Microcip", url: "/images/res/microcip.png" },
       { name: "Rezistor", url: "/images/res/rezistor.png" },
       { name: "Condensator", url: "/images/res/condensator.png" },
     ]);
 
-    if (inventoryRef.current)
+    if (inventoryRef.current) {
       inventoryRef.current.setInventory(Array(24).fill(null));
+    }
 
     localStorage.removeItem("bigSquareItems");
     localStorage.removeItem("discoveredItems");
@@ -171,32 +177,38 @@ function App() {
     setCraftedItemUrl(null);
     setInventoryTrigger((prev) => prev + 1);
     setHasWon(false);
-  };
+  }
+
   //Stergem un item din inventar
-  const handleRemoveFromInventory = (index) => {
-    if (inventoryRef.current) inventoryRef.current.removeItem(index);
+  function handleRemoveFromInventory(index) {
+    if (inventoryRef.current) {
+      inventoryRef.current.removeItem(index);
+    }
     setInventoryTrigger((prev) => prev + 1);
-  };
+  }
+
   //Stergem un item din BigSquare
-  const handleRemoveFromBigSquare = (index) => {
+  function handleRemoveFromBigSquare(index) {
     const newGrid = bigSquareItems.map((row) => [...row]);
     const row = Math.floor(index / 3);
     const col = index % 3;
     newGrid[row][col] = null;
     updateBigSquare(newGrid);
-  };
+  }
 
   const savedInventory =
     JSON.parse(localStorage.getItem("inventoryItems")) || Array(24).fill(null);
 
   //Resetam inventarul sa fie gol
-  const clearInventory = () => {
-    if (inventoryRef.current)
+  function clearInventory() {
+    if (inventoryRef.current) {
       inventoryRef.current.setInventory(Array(24).fill(null));
+    }
     setInventoryTrigger((prev) => prev + 1);
-  };
+  }
+
   //Daca sa gasit obiectul
-  const handleCraftItem = () => {
+  function handleCraftItem() {
     if (!craftedItemUrl || !inventoryRef.current) return;
 
     const matchedRecipe = recipesData.find((r) => r.name === craftedItemName);
@@ -208,13 +220,15 @@ function App() {
       description: matchedRecipe.description,
       recipe: bigSquareItems,
     };
-    //Adaugam in inventar
+
+    // Adaugam in inventar
     inventoryRef.current.addItem({
       name: craftedItemName,
       url: craftedItemUrl,
     });
-    //Adaugam in lista cu obiecte descoperite
-    setDiscoveredItems((prev) => {
+
+    // Adaugam in lista cu obiecte descoperite
+    setDiscoveredItems(function (prev) {
       let exists = false;
       for (let i = 0; i < prev.length; i++) {
         if (prev[i].name === craftedItemName) {
@@ -223,7 +237,7 @@ function App() {
         }
       }
 
-      if (exists == true) return prev;
+      if (exists === true) return prev;
 
       const newDiscovered = [...prev, newItem];
       if (craftedItemName === "Jucărie electronică") setHasWon(true);
@@ -238,7 +252,8 @@ function App() {
         .map(() => Array(3).fill(null))
     );
     setInventoryTrigger((prev) => prev + 1);
-  };
+  }
+
   function moveToBigSquare(item, index) {
     const newGrid = bigSquareItems.map((row) => [...row]);
     if (index !== undefined) {
