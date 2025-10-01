@@ -24,7 +24,6 @@ const Inventory = forwardRef(
         const newSquares = [...prev];
 
         if (from === "bigSquare") {
-          if (targetIndex === sourceIndex) return newSquares;
           if (newSquares[targetIndex]) {
             const temp = newSquares[targetIndex];
             newSquares[targetIndex] = item;
@@ -47,12 +46,13 @@ const Inventory = forwardRef(
         return newSquares;
       });
 
-      setInventoryTrigger && setInventoryTrigger((prev) => prev + 1);
+      setInventoryTrigger((prev) => prev + 1);
     };
 
     const addItem = (item) => {
-      const firstEmpty = squares.findIndex((s) => !s);
+      const firstEmpty = squares.findIndex((s) => s === null);
       const newSquares = [...squares];
+      //daca am gasit o pozitie null
       if (firstEmpty !== -1) newSquares[firstEmpty] = item;
       else newSquares.push(item);
       setSquares(newSquares);

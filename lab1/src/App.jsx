@@ -11,7 +11,7 @@ import DiscoveredPanel from "./components/DiscoveredPanel/DiscoveredPanel";
 import WinOverlay from "./components/WinOverlay/WinOverlay";
 
 function App() {
-  const inventoryRef = useRef();
+  const inventoryRef = useRef(); //Referinta catre compenenta Inventory
 
   const [bigSquareItems, setBigSquareItems] = useState(() => {
     const saved = localStorage.getItem("bigSquareItems");
@@ -22,6 +22,7 @@ function App() {
           .map(() => Array(3).fill(null));
   });
 
+  //Lista obiectelor descoperite
   const [discoveredItems, setDiscoveredItems] = useState(() => {
     const saved = localStorage.getItem("discoveredItems");
     if (saved) return JSON.parse(saved);
@@ -37,6 +38,7 @@ function App() {
   const [craftedItemName, setCraftedItemName] = useState(null);
   const [hasWon, setHasWon] = useState(false);
 
+  //Verificare daca in BigSquare este o retea valida
   const checkPattern = (grid) => {
     for (let recipe of recipesData) {
       let match = true;
@@ -44,16 +46,17 @@ function App() {
         for (let c = 0; c < 3; c++) {
           const patternItem = recipe.pattern[r][c];
           const gridItem = grid[r][c]?.name || null;
-          if (patternItem && patternItem !== gridItem) {
+          if (patternItem !== gridItem) {
             match = false;
           }
         }
       }
-      if (match) return recipe;
+      if (match == true) return recipe;
     }
     return null;
   };
 
+  //Salvarea in localStorage
   useEffect(() => {
     localStorage.setItem("bigSquareItems", JSON.stringify(bigSquareItems));
   }, [bigSquareItems]);
@@ -69,11 +72,13 @@ function App() {
     }
   }, [inventoryTrigger]);
 
+  //Actualizeaza BigSquare cu o noua grila
   const updateBigSquare = (newGrid) => {
     setBigSquareItems(newGrid);
 
-    const matchedRecipe = checkPattern(newGrid);
+    const matchedRecipe = checkPattern(newGrid); //Verificam daca grila se potriveste cu o retea
 
+    //Setez imaginea si numele în Square singur
     if (matchedRecipe) {
       setCraftedItemUrl(matchedRecipe.url);
       setCraftedItemName(matchedRecipe.name);
@@ -85,20 +90,22 @@ function App() {
 
   const addItemToBigSquare = (item, inventoryIndex) => {
     const newGrid = bigSquareItems.map((row) => [...row]);
-    const flat = newGrid.flat();
-    const targetIndex = flat.findIndex((i) => !i);
-    if (targetIndex === -1) return;
-
-    const row = Math.floor(targetIndex / 3);
-    const col = targetIndex % 3;
-    newGrid[row][col] = item;
-
-    if (inventoryRef.current) inventoryRef.current.removeItem(inventoryIndex);
-
-    updateBigSquare(newGrid);
-    setInventoryTrigger((prev) => prev + 1);
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        if (!newGrid[r][c]) {
+          //Daca patratul e gol setez itemul
+          newGrid[r][c] = item;
+          if (inventoryRef.current)
+            //Daca este referinta la inventar o sterg
+            inventoryRef.current.removeItem(inventoryIndex);
+          updateBigSquare(newGrid); //Actualizez BigSquare
+          setInventoryTrigger((prev) => prev + 1); //Actalizez inventarul
+          return;
+        }
+      }
+    }
   };
-
+  //Mutam din BigSquare in inventar
   const handleClickBigSquare = (item, index) => {
     if (inventoryRef.current && item) {
       inventoryRef.current.addItem(item);
@@ -107,11 +114,11 @@ function App() {
     const newGrid = bigSquareItems.map((row) => [...row]);
     const row = Math.floor(index / 3);
     const col = index % 3;
-    newGrid[row][col] = null;
+    newGrid[row][col] = null; //Setez valoarea la null pe pozitia unde era itemul in BigSquare
 
-    updateBigSquare(newGrid);
+    updateBigSquare(newGrid); //Actualizez BigSquare
   };
-
+  //Mutam obiectele in BigSquare fie din Invantar fie din BigSquare
   const handleDropItem = (targetIndex, item, sourceIndex, from) => {
     const newGrid = bigSquareItems.map((row) => [...row]);
     const row = Math.floor(targetIndex / 3);
@@ -140,6 +147,7 @@ function App() {
     setInventoryTrigger((prev) => prev + 1);
   };
 
+  //Resetam jocul
   const restartGame = () => {
     setBigSquareItems(
       Array(3)
@@ -164,12 +172,12 @@ function App() {
     setInventoryTrigger((prev) => prev + 1);
     setHasWon(false);
   };
-
+  //Stergem un item din inventar
   const handleRemoveFromInventory = (index) => {
     if (inventoryRef.current) inventoryRef.current.removeItem(index);
     setInventoryTrigger((prev) => prev + 1);
   };
-
+  //Stergem un item din BigSquare
   const handleRemoveFromBigSquare = (index) => {
     const newGrid = bigSquareItems.map((row) => [...row]);
     const row = Math.floor(index / 3);
@@ -181,12 +189,13 @@ function App() {
   const savedInventory =
     JSON.parse(localStorage.getItem("inventoryItems")) || Array(24).fill(null);
 
+  //Resetam inventarul sa fie gol
   const clearInventory = () => {
     if (inventoryRef.current)
       inventoryRef.current.setInventory(Array(24).fill(null));
     setInventoryTrigger((prev) => prev + 1);
   };
-
+  //Daca sa gasit obiectul
   const handleCraftItem = () => {
     if (!craftedItemUrl || !inventoryRef.current) return;
 
@@ -199,14 +208,23 @@ function App() {
       description: matchedRecipe.description,
       recipe: bigSquareItems,
     };
-
+    //Adaugam in inventar
     inventoryRef.current.addItem({
       name: craftedItemName,
       url: craftedItemUrl,
     });
-
+    //Adaugam in lista cu obiecte descoperite
     setDiscoveredItems((prev) => {
-      if (prev.some((item) => item.name === craftedItemName)) return prev;
+      let exists = false;
+      for (let i = 0; i < prev.length; i++) {
+        if (prev[i].name === craftedItemName) {
+          exists = true;
+          break;
+        }
+      }
+
+      if (exists == true) return prev;
+
       const newDiscovered = [...prev, newItem];
       if (craftedItemName === "Jucărie electronică") setHasWon(true);
       return newDiscovered;
@@ -221,6 +239,15 @@ function App() {
     );
     setInventoryTrigger((prev) => prev + 1);
   };
+  function moveToBigSquare(item, index) {
+    const newGrid = bigSquareItems.map((row) => [...row]);
+    if (index !== undefined) {
+      const row = Math.floor(index / 3);
+      const col = index % 3;
+      newGrid[row][col] = item;
+      updateBigSquare(newGrid);
+    }
+  }
 
   return (
     <>
@@ -256,15 +283,7 @@ function App() {
             addItemToBigSquare={addItemToBigSquare}
             initialInventory={savedInventory}
             setInventoryTrigger={setInventoryTrigger}
-            moveToBigSquare={(item, index) => {
-              const newGrid = bigSquareItems.map((row) => [...row]);
-              if (index !== undefined) {
-                const row = Math.floor(index / 3);
-                const col = index % 3;
-                newGrid[row][col] = item;
-                updateBigSquare(newGrid);
-              }
-            }}
+            moveToBigSquare={moveToBigSquare}
             removeFromBigSquare={handleRemoveFromBigSquare}
           />
           <div className="rightPanel">

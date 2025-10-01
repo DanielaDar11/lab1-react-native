@@ -13,7 +13,7 @@ const BigSquare = ({ gridItems, onDropItem, onClickSquare }) => {
       e.dataTransfer.getData("item")
     );
     if (sourceIndex === targetIndex && from === "bigSquare") return;
-    onDropItem && onDropItem(targetIndex, item, sourceIndex, from);
+    onDropItem(targetIndex, item, sourceIndex, from);
   };
 
   return (

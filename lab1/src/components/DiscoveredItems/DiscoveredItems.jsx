@@ -16,7 +16,7 @@ const ingredientImages = {
   Dronă: "/images/res/drone.png",
   "Jucărie electronică": "/images/res/electric-car.png",
 };
-
+//Afiseaza reteaua
 const ItemRecipe = ({ recipe }) => (
   <div className={styles.itemRecipe}>
     {recipe?.flat().map((ing, i) => (
@@ -27,7 +27,7 @@ const ItemRecipe = ({ recipe }) => (
     ))}
   </div>
 );
-
+//Afiseaza obiectul
 const DiscoveredItem = ({ item }) => (
   <li className={styles.discoveredItem}>
     <Square imgUrl={item.url} />
@@ -36,7 +36,7 @@ const DiscoveredItem = ({ item }) => (
     <ItemRecipe recipe={item.recipe} />
   </li>
 );
-
+//Lista de obiecte descoperite
 const DiscoveredItemList = ({ items }) =>
   items.length === 0 ? (
     <p className={styles.emptyMessage}>Nu ai descoperit încă obiecte.</p>
